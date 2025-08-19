@@ -4,13 +4,14 @@ from setuptools import setup, find_packages
 # use a consistent encoding
 from codecs import open
 from os import path
+import os
 import json
 import sys
 
 is_python_2 = sys.version_info < (3, 0)
 
-here = path.abspath(path.dirname(__file__))
-root = path.dirname(here)
+here = os.path.abspath("D:\\ccxt_queue")
+root = os.path.abspath("D:\\ccxt_queue")
 
 readme = path.join(here, 'README.md')
 package_json = path.join(here, 'package.json')
