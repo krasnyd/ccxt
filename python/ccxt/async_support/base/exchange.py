@@ -84,7 +84,7 @@ class Exchange(BaseExchange):
     def init_stream(self):
         maxMessagesPerTopic = self.streaming.get('maxMessagesPerTopic', 0)
         verbose = self.streaming.get('verbose', self.verbose)
-        consumerQueueSize = self.options.get('consumerQueueSize', 10)
+        consumerQueueSize = self.consumerQueueSize
         self.stream = Stream(maxMessagesPerTopic, verbose, consumerQueueSize)
         if self.is_streaming_enabled():
             self.setup_stream()
