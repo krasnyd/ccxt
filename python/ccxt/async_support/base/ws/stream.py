@@ -7,7 +7,7 @@ MessagePayload = Any
 
 
 class Stream:
-    def __init__(self, max_messages_per_topic: int = 10000, verbose: bool = False):
+    def __init__(self, max_messages_per_topic: int = 10000, verbose: bool = False, consumer_queue_size: int = 10) -> None:
         """
         Initializes a new Stream object.
         :param int max_messages_per_topic: Maximum number of messages per topic. Defaults to None.
@@ -19,6 +19,7 @@ class Stream:
         self.active_watch_functions: List[str, List[Any]] = []
         # Add a dictionary to track the last index per topic
         self.topic_indexes: Dict[Topic, int] = {}
+        self.consumer_queue_size = consumer_queue_size
 
     def produce(self, topic: Topic, payload: Any, error: Any = None) -> None:
         """
@@ -56,7 +57,7 @@ class Stream:
         :param ConsumerFunction consumer_fn: The consumer function to subscribe.
         :param bool synchronous: Whether the consumer function should be called synchronously. Defaults to True.
         """
-        consumer = Consumer(consumer_fn, self.get_last_index(topic), {'synchronous': synchronous})
+        consumer = Consumer(consumer_fn, self.get_last_index(topic), {'synchronous': synchronous, 'queue_size': self.consumer_queue_size})
         if topic not in self.consumers:
             self.consumers[topic] = []
         self.consumers[topic].append(consumer)

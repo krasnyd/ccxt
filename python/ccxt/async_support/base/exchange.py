@@ -76,15 +76,16 @@ class Exchange(BaseExchange):
         self.own_session = 'session' not in config
         self.cafile = config.get('cafile', certifi.where())
         self.throttler = None
-        self.init_stream()
         super(Exchange, self).__init__(config)
+        self.init_stream()
         self.markets_loading = None
         self.reloading_markets = False
 
     def init_stream(self):
         maxMessagesPerTopic = self.streaming.get('maxMessagesPerTopic', 0)
         verbose = self.streaming.get('verbose', self.verbose)
-        self.stream = Stream(maxMessagesPerTopic, verbose)
+        consumerQueueSize = self.options.get('consumerQueueSize', 10)
+        self.stream = Stream(maxMessagesPerTopic, verbose, consumerQueueSize)
         if self.is_streaming_enabled():
             self.setup_stream()
 
