@@ -18,10 +18,11 @@ class Consumer:
         self.running = False
         self.backlog: deque[Message] = deque()
         self.tasks: List[asyncio.Task] = []
+        self.topic = options.get('topic', '')
 
     def publish(self, message: Message) -> None:
         if len(self.backlog) >= self.backlog_size:
-            logger.warning(f"WebSocket consumer backlog is at maximum size ({self.backlog_size} messages). Replacing oldest message with newest to prioritize recent messages.")
+            logger.warning(f"WebSocket consumer backlog (topic={self.topic}) is at maximum size ({self.backlog_size} messages). Replacing oldest message with newest to prioritize recent messages.")
             # Remove the oldest message (first in the deque) and add the new one
             self.backlog.popleft()
         self.backlog.append(message)

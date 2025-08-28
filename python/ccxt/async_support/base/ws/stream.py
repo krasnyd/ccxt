@@ -57,7 +57,7 @@ class Stream:
         :param ConsumerFunction consumer_fn: The consumer function to subscribe.
         :param bool synchronous: Whether the consumer function should be called synchronously. Defaults to True.
         """
-        consumer = Consumer(consumer_fn, self.get_last_index(topic), {'synchronous': synchronous, 'queue_size': self.consumer_queue_size})
+        consumer = Consumer(consumer_fn, self.get_last_index(topic), {'synchronous': synchronous, 'queue_size': self.consumer_queue_size, 'topic': topic})
         if topic not in self.consumers:
             self.consumers[topic] = []
         self.consumers[topic].append(consumer)
