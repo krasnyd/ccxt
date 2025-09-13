@@ -1885,7 +1885,8 @@ class Exchange(BaseExchange):
         if not self.is_streaming_enabled():
             self.setup_stream()
         await self.load_markets()
-        symbol = self.symbol(symbol)
+        if symbol is not None:
+            symbol = self.symbol(symbol)
         stream = self.stream
         if callback is not None:
             if symbol is None:
