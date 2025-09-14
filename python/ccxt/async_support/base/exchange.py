@@ -1949,10 +1949,14 @@ class Exchange(BaseExchange):
         if not self.is_streaming_enabled():
             self.setup_stream()
         await self.load_markets()
-        symbol = self.symbol(symbol)
+        if symbol is not None:
+            symbol = self.symbol(symbol)
         stream = self.stream
         if callback is not None:
-            stream.subscribe('myTrades::' + symbol, callback, synchronous)
+            if symbol is None:
+                stream.subscribe('myTrades', callback, synchronous)
+            else:
+                stream.subscribe('myTrades::' + symbol, callback, synchronous)
         stream.add_watch_function('watchMyTrades', [symbol, None, None, params])
         return await self.watch_my_trades(symbol, None, None, params)
 
